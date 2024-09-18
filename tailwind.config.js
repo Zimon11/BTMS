@@ -14,8 +14,17 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            borderRadius: {
+                'inset': '50% / 50% 0 0'  // Custom border radius value
+              },
         },
     },
 
     plugins: [forms],
 };
+
+
+
+
+
+  

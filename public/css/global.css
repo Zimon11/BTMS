@@ -13,3 +13,10 @@
     -moz-box-shadow: 0px 0px 16px 2px rgba(0,0,0,0.1);
     box-shadow: 0px 0px 16px 2px rgba(0,0,0,0.1);
   }
+
+/* styles.css */
+.inset-rounded {
+    border-radius: 50%;
+    clip-path: inset(0 0 0 0 round 50%);
+  }
+  

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
-
+        <link href="{{ asset('css/global.css') }}" rel="stylesheet">
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
@@ -24,9 +24,11 @@
 
             <!-- Page Content -->
             <main>
-
+                
                 
             </main>
         </div>
     </body>
+
+
 </html>
