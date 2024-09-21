@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RouteSchedulingController;
 use App\Http\Controllers\RouteController;
 
 Route::get('/', function () {
@@ -18,32 +21,53 @@ Route::get('/route-sched', function () {
 })->middleware(['auth', 'verified'])->name('route-sched');
 
 //Route Scheduling
-Route::get('/route-bus-stop', function () {
-    return view('route-bus-stop');
-})->middleware(['auth', 'verified'])->name('route-bus-stop');
+Route::get('/route-optimization', function () {
+    return view('route-optimization');
+})->middleware(['auth', 'verified'])->name('route-optimization');
 
 //Route Scheduling
 Route::get('/route-timetable', function () {
     return view('route-timetable');
 })->middleware(['auth', 'verified'])->name('route-timetable');
 
-Route::get('/route-holiday', function () {
-    return view('route-holiday');
-})->middleware(['auth', 'verified'])->name('route-holiday');
-
 //Driver Management
 Route::get('/driver-management', function () {
     return view('driver-management');
 })->middleware(['auth', 'verified'])->name('driver-management');
 
+Route::get('/driver-shifts', function () {
+    return view('driver-shifts');
+})->middleware(['auth', 'verified'])->name('driver-shifts');
+
+Route::get('/driver-verification', function () {
+    return view('driver-verification');
+})->middleware(['auth', 'verified'])->name('driver-verification');
+
 Route::get('/fleet-management', function () {
     return view('fleet-management');
 })->middleware(['auth', 'verified'])->name('fleet-management');
 
-Route::middleware('auth')->group(function () {
+Route::get('/fleet-status', function () {
+    return view('fleet-status');
+})->middleware(['auth', 'verified'])->name('fleet-status');
+
+Route::get('/fleet-monitoring', function () {
+    return view('fleet-monitoring');
+})->middleware(['auth', 'verified'])->name('fleet-monitoring');
+
+Route::get('/real-time-data', function () {
+    return view('real-time-data');
+})->middleware(['auth', 'verified'])->name('real-time-data');
+
+Route::get('route-sched', [RouteSchedulingController::class, 'index'])->name('route-sched');
+Route::post('route-sched', [RouteSchedulingController::class, 'store'])->name('route-sched');
+
+Route::middleware('auth', 'admin','super-admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('/superadmin', [SuperAdminController::class, 'makeAdmin'])->name('superadmin.makeAdmin');
 });
 
 require __DIR__.'/auth.php';
