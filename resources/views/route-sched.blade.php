@@ -6,21 +6,7 @@
     </x-slot>
 
     <x-slot:main>
-      <div class="container mx-auto p-6">
-        <div class="inline-flex space-x-5 mb-3">
-            <!-- Drivers -->
-            <a href="#" class="flex items-center justify-between p-4 bg-blue-600 hover:bg-blue-500 transition-colors duration-300 rounded-lg space-x-2">
-                <i class="ti ti-user text-white text-xl"></i>
-                <h1 class="text-white font-semibold">Drivers</h1>
-            </a>
-        
-            <!-- Buses -->
-            <a href="#" class="flex items-center justify-between p-4 bg-blue-600 hover:bg-blue-500 transition-colors duration-300 rounded-lg space-x-2">
-                <i class="ti ti-bus text-white text-xl"></i>
-                <h1 class="text-white font-semibold">Buses</h1>
-            </a>
-        </div>
-        
+      <div class="container mx-auto p-6">      
         <!-- Header -->
         <header class="mb-6 flex justify-end">
             <x-primary-button id="openModalButton" >Create Route</x-primary-button>

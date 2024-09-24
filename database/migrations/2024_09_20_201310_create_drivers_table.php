@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id('DriverID');
             $table->string('FullName');
+            $table->string('Email')->unique();
+            $table->string('Password');
             $table->string('LicenseNumber');
             $table->string('ContactInfo');
             $table->foreignId('AssignedBus')->nullable()->constrained('buses')->onDelete('set null');

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FleetManagementController;
 use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RouteSchedulingController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RouteController;
 
 Route::get('/', function () {
@@ -61,13 +63,24 @@ Route::get('/real-time-data', function () {
 
 Route::get('route-sched', [RouteSchedulingController::class, 'index'])->name('route-sched');
 Route::post('route-sched', [RouteSchedulingController::class, 'store'])->name('route-sched');
+Route::get('fleet-status', [FleetManagementController::class, 'index'])->name('fleet-status');
+Route::post('fleet-status', [FleetManagementController::class, 'store'])->name('fleet-status');
 
-Route::middleware('auth', 'admin','super-admin')->group(function () {
+Route::middleware('auth', 'admin','super-admin','driver')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::post('/superadmin', [SuperAdminController::class, 'makeAdmin'])->name('superadmin.makeAdmin');
+    Route::get('admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('superadmin', [SuperAdminController::class, 'makeAdmin'])->name('superadmin.makeAdmin');
 });
+// routes/web.php
+Route::prefix('driver')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DriverController::class, 'dashboard'])->name('driver.dashboard');
+    Route::get('/profile', [DriverController::class, 'profile'])->name('driver.profile');
+    Route::post('/checkin', [DriverController::class, 'checkIn'])->name('driver.checkin');
+    Route::post('/checkout', [DriverController::class, 'checkOut'])->name('driver.checkout');
+    Route::get('/schedule', [DriverController::class, 'schedule'])->name('driver.schedule');
+});
+
 
 require __DIR__.'/auth.php';
