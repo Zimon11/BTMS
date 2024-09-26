@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('Password');
             $table->string('LicenseNumber');
             $table->string('ContactInfo');
-            $table->foreignId('AssignedBus')->nullable()->constrained('buses')->onDelete('set null');
+            $table->unsignedBigInteger('AssignedBus')->nullable(); // Make the column nullable
+            $table->foreign('AssignedBus')->references('BusID')->on('buses')->onDelete('set null'); // Define the foreign key constraint correctly
             $table->decimal('PerformanceScore', 5, 2)->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**

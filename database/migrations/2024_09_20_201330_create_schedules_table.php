@@ -11,15 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('schedules', function (Blueprint $table) {
-            $table->id('ScheduleID');
-            $table->foreignId('RouteID')->constrained('routes')->onDelete('cascade'); // Assuming you have a routes table
-            $table->foreignId('BusID')->constrained('buses')->onDelete('cascade');
-            $table->foreignId('DriverID')->constrained('drivers')->onDelete('cascade');
-            $table->timestamp('StartTime');
-            $table->timestamp('EndTime');
-            $table->timestamps();
-        });
+       Schema::create('schedules', function (Blueprint $table) {
+            $table->id('ScheduleID'); // Primary key for this table
+        
+            // Ensure these columns are of type unsignedBigInteger to match the referenced columns
+            $table->unsignedBigInteger('RouteID');
+            $table->unsignedBigInteger('BusID');
+            $table->unsignedBigInteger('DriverID');
+        
+            // Define foreign key constraints
+            $table->foreign('RouteID')->references('RouteID')->on('routes')->onDelete('cascade');
+            $table->foreign('BusID')->references('BusID')->on('buses')->onDelete('cascade');
+            $table->foreign('DriverID')->references('DriverID')->on('drivers')->onDelete('cascade');
+        
+            // Use dateTime for flexible datetime handling
+            $table->dateTime('StartTime');
+            $table->dateTime('EndTime');
+            $table->timestamps();      
+});
+        
     }
 
     /**

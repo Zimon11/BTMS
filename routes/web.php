@@ -3,19 +3,17 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FleetManagementController;
-use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RouteSchedulingController;
 use App\Http\Controllers\DriverController;
-use App\Http\Controllers\RouteController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::any('/', [WelcomeController::class, 'index'])->name('welcome');
+
+Route::get('/driver/dashboard', function () {
+    return view('driver/dashboard');
+})->middleware(['auth', 'verified'])->name('driver.dashboard');
 
 //Route Scheduling
 Route::get('/route-sched', function () {
@@ -62,24 +60,23 @@ Route::get('/real-time-data', function () {
 })->middleware(['auth', 'verified'])->name('real-time-data');
 
 Route::get('route-sched', [RouteSchedulingController::class, 'index'])->name('route-sched');
-Route::post('route-sched', [RouteSchedulingController::class, 'store'])->name('route-sched');
+Route::post('route-sched', [RouteSchedulingController::class, 'store'])->name('route-store');
 Route::get('fleet-status', [FleetManagementController::class, 'index'])->name('fleet-status');
-Route::post('fleet-status', [FleetManagementController::class, 'store'])->name('fleet-status');
+Route::post('fleet-status', [FleetManagementController::class, 'store'])->name('fleet-store');
 
-Route::middleware('auth', 'admin','super-admin','driver')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::post('superadmin', [SuperAdminController::class, 'makeAdmin'])->name('superadmin.makeAdmin');
 });
-// routes/web.php
-Route::prefix('driver')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DriverController::class, 'dashboard'])->name('driver.dashboard');
-    Route::get('/profile', [DriverController::class, 'profile'])->name('driver.profile');
-    Route::post('/checkin', [DriverController::class, 'checkIn'])->name('driver.checkin');
-    Route::post('/checkout', [DriverController::class, 'checkOut'])->name('driver.checkout');
-    Route::get('/schedule', [DriverController::class, 'schedule'])->name('driver.schedule');
+// Admin routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+});
+
+// Driver routes
+Route::middleware(['auth', 'role:driver'])->group(function () {
+    Route::get('driver/dashboard', [DriverController::class, 'index'])->name('driver.dashboard');
 });
 
 

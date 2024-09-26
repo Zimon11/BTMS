@@ -14,7 +14,9 @@ class Buses extends Model
         'Capacity',
         'Status',
     ];
-    
+    public function drivers() {
+        return $this->belongsTo(Drivers::class);
+    }
     public $timestamps = true;
     use HasFactory;
 }
